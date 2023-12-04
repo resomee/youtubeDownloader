@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: youtube-downloader
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "3002:3000"
