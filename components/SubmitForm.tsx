@@ -4,11 +4,13 @@ import { youtube_parser } from "@/utils/client/common";
 import { getYoutubeInfo } from "@/utils/server/youtube";
 import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import LoadingSpinner from "./LoadingSpinner";
 
 const trueBorderColor = "border-gray-300";
 const falseBorderColor = "border-red-500";
 
 export default function SubmitForm() {
+  const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
   const [validState, setValidState] = useState({
     state: true,
@@ -17,22 +19,15 @@ export default function SubmitForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const id = youtube_parser(url);
-
-      getYoutubeInfo(id).then((videoInfo) => {
-        console.log(videoInfo);
-        useVideoFormatStore.getState().setVideoInfo(videoInfo);
-        // useVideoFormatStore.setState({
-        //   videoInfo
-        // formats: videoInfo.formats.sort((a, b) => {
-        //   if (a.qualityLabel && b.qualityLabel)
-        //     return parseInt(b.qualityLabel) - parseInt(a.qualityLabel);
-        //   if (a.qualityLabel) return -1;
-        //   if (b.qualityLabel) return 1;
-        //   return 0;
-        // }),
-        // });
-      });
+      getYoutubeInfo(id)
+        .then((videoInfo) => {
+          useVideoFormatStore.getState().setVideoInfo(videoInfo);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
       setValidState({ state: true, color: trueBorderColor });
     } catch (error) {
       setValidState({ state: false, color: falseBorderColor });
@@ -63,6 +58,7 @@ export default function SubmitForm() {
           <div className="text-red-500 text-sm mt-1">잘못된 주소입니다.</div>
         )}
       </form>
+      {isLoading && <LoadingSpinner />}
     </section>
   );
 }
