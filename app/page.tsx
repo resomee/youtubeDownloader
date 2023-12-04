@@ -10,7 +10,8 @@ export default function Home() {
           <h1 className="font-bold text-xl">Youtube Downloader</h1>
         </a>
       </header>
-      <main>
+      <main className="min-w-[400px]">
+        {" "}
         <SubmitForm />
         <VideoDetail />
         <FormatList />

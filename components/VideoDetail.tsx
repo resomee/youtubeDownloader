@@ -7,8 +7,7 @@ export default function VideoDetail() {
   if (info === null) return null;
 
   const videoDetails = info.videoDetails;
-
-  // ownerChannelName, title, thumbnails, lengthSeconds, viewCount
+  const isLengthZero = videoDetails.lengthSeconds === "0";
 
   return (
     <section className="flex gap-4 p-4">
@@ -23,9 +22,12 @@ export default function VideoDetail() {
         <h2 className="font-bold text-lg">{videoDetails.title}</h2>
         <p className="text-gray-600">{videoDetails.ownerChannelName}</p>
         <div className="flex gap-5">
-          <p className="text-gray-600">
-            {formatDuration(Number(videoDetails.lengthSeconds) * 1000)}
-          </p>
+          {!isLengthZero && (
+            <p className="text-gray-600">
+              {videoDetails.lengthSeconds}
+              {formatDuration(Number(videoDetails.lengthSeconds) * 1000)}
+            </p>
+          )}
           <p className="text-gray-600">{videoDetails.viewCount} views</p>
         </div>
       </div>

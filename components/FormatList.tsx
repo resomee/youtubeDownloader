@@ -69,13 +69,13 @@ function FormatItem({ format }: FormatItemProps) {
 
   return (
     <li className="bg-gray-100 p-4 rounded" key={format.itag}>
-      <div className="flex justify-between gap-10">
-        <div className="flex-shrink-0 w-24 flex gap-3">
+      <div className="flex justify-between gap-5">
+        <div className="flex-shrink-0 w-12 flex justify-between">
           {videoIcon}
           {audioIcon}
         </div>
-        <div className="flex-grow flex justify-between">
-          <h2 className="flex gap-3">
+        <div className="flex-grow flex-shrink justify-between min-w-0">
+          <div className="flex flex-shrink gap-3">
             <div className="flex-shrink-0 w-16">
               <span
                 className={`rounded ${containerTypeColor} px-2 py-1 text-gray-600 text-sm font-bold uppercase`}
@@ -83,9 +83,13 @@ function FormatItem({ format }: FormatItemProps) {
                 {format.container}
               </span>
             </div>
-            <span>{format.qualityLabel || format.audioQuality}</span>
-          </h2>
-          <div className="text-gray-400">{getfileSizeFormat(fileSize)}</div>
+            <div className="flex-grow flex-shrink text-ellipsis overflow-hidden whitespace-nowrap min-w-0">
+              {format.qualityLabel || format.audioQuality}
+            </div>
+          </div>
+          {!Number.isNaN(fileSize) && (
+            <div className="text-gray-400">{getfileSizeFormat(fileSize)}</div>
+          )}
         </div>
         <div className="flex-shrink-0">
           <a
